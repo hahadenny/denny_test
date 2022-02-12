@@ -13,14 +13,19 @@ class MainController extends Controller
 		//print_r($request->all()); exit;
 		$rules = [
 			'Id' => array('numeric'),
+			'DateAdded' => array('regex:/^\d{4}\-\d{2}\-\d{2}$/'),
 			'Type' => array('in:used,new'),
 			'Year' => array('digits:4'),
 			'Model' => array('string'),
 			'Make' => array('string'),
 			'Vin' => array('string'),
 			//'Deleted' => array('in:0,1'),
-			'Sort' => array('in:Type,Year,Model,Make,Vin'),
+			'Sort' => array('in:Id,DateAdded,Type,Year,Model,Make,Vin'),
 			'Order' => array('in:asc,desc'),
+			'Sort2' => array('in:Id,DateAdded,Type,Year,Model,Make,Vin'),
+			'Order2' => array('in:asc,desc'),
+			'Sort3' => array('in:Id,DateAdded,Type,Year,Model,Make,Vin'),
+			'Order3' => array('in:asc,desc'),
 			'Page' => array('numeric'),
 			'Limit' => array('numeric')
 		];
@@ -43,6 +48,9 @@ class MainController extends Controller
 		
 		if ($request->Id)
 			$query->where('Id', $request->Id);
+		
+		if ($request->DateAdded)
+			$query->where(DB::raw('date(DateAdded)'), $request->DateAdded);
 		
 		if ($request->Type)
 			$query->where('Type', $request->Type);
@@ -71,6 +79,16 @@ class MainController extends Controller
 			$query->orderBy($request->Sort, $order);
 		}
 		
+		if ($request->Sort2) {
+			$order2 = $request->Order2 ? $request->Order2 : 'asc';
+			$query->orderBy($request->Sort2, $order2);
+		}
+		
+		if ($request->Sort3) {
+			$order3 = $request->Order3 ? $request->Order3 : 'asc';
+			$query->orderBy($request->Sort3, $order3);
+		}
+		
 		if ($request->Limit) {
 			$query->limit($request->Limit);
 			if ($request->Page) {
@@ -82,7 +100,7 @@ class MainController extends Controller
 		$result = $query->get();
 		//print_r($result); exit;
 		
-		return $result->toJson();
+		return response()->json($result);
     }
 	
 	public function addCar(Request $request) {
@@ -127,7 +145,7 @@ class MainController extends Controller
 		
 		$result['Id'] = $data->Id;
 		
-		return json_encode($result);
+		return response()->json($result);
 	}
 	
 	public function delCar(Request $request) {
@@ -154,7 +172,7 @@ class MainController extends Controller
 		
 		$result['status'] = 'success';
 		
-		return json_encode($result);
+		return response()->json($result);
 	}
 	
 	public function editCar(Request $request) {
@@ -211,6 +229,6 @@ class MainController extends Controller
 		
 		$result = Vehicle::where('Id', $request->Id)->get();
 		
-		return $result->toJson();
+		return response()->json($result);
 	}
 }
