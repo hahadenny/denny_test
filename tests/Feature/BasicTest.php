@@ -15,22 +15,6 @@ class BasicTest extends TestCase
      *
      * @return void
      */
-	public $Id;
-	 
-    public function testConnect()
-    {
-        $response = $this->get('/getCarList');
-        $response->assertStatus(200);
-		
-		$response = $this->post('/addCar');
-        $response->assertStatus(200);
-		
-		$response = $this->delete('/delCar');
-        $response->assertStatus(200);
-		
-		$response = $this->patch('/editCar');
-        $response->assertStatus(200);
-    }
 	
 	public function testAddCar()
     {		
