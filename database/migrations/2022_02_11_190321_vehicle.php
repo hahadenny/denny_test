@@ -17,7 +17,7 @@ class Vehicle extends Migration
 	    $table->increments('Id');
 	    $table->dateTime('DateAdded');
 	    $table->enum('Type', ['used', 'new']);
-	    $table->decimal('Msrp', 8, 2);
+	    $table->decimal('Msrp', 20, 2);
 	    $table->integer('Year');
 	    $table->string('Make');
 	    $table->string('Model');
