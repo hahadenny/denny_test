@@ -18,9 +18,10 @@ class MainController extends Controller
 			'Model' => array('string'),
 			'Make' => array('string'),
 			'Vin' => array('string'),
+			//'Deleted' => array('in:0,1'),
 			'Sort' => array('in:Type,Year,Model,Make,Vin'),
 			'Order' => array('in:asc,desc'),
-			'Start' => array('numeric'),
+			'Page' => array('numeric'),
 			'Limit' => array('numeric')
 		];
 				
@@ -72,8 +73,10 @@ class MainController extends Controller
 		
 		if ($request->Limit) {
 			$query->limit($request->Limit);
-			if ($request->Start)
-				$query->offset($request->Start);
+			if ($request->Page) {
+				$offset = $request->Page * $request->Limit;
+				$query->offset($offset);
+			}
 		}
 		
 		$result = $query->get();
