@@ -89,8 +89,7 @@ class BasicTest extends TestCase
 			
 		$this->json('PATCH', "/editCar/$carId", $data, ['Accept' => 'application/json', 'UserName' => $this->test_username, 'Token' => $this->test_token])
             ->assertStatus(200)
-            ->assertJsonStructure(
-				['*' => [
+            ->assertJsonStructure([
 					"Id",
 					"DateAdded",
 					"Type",
@@ -101,7 +100,7 @@ class BasicTest extends TestCase
 					"Miles",
 					"Vin",
 					"Deleted"
-            ]]); 
+            ]); 
 			
 		$car = Vehicle::where('Id', $carId)->get()->first();
 		$this->assertEquals($data['Vin'], $car->Vin);

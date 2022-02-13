@@ -239,7 +239,7 @@ class MainController extends Controller
 		
 		Vehicle::where('Id', $Id)->update($data);
 		
-		$result = Vehicle::where('Id', $Id)->get();
+		$result = Vehicle::where('Id', $Id)->first();
 		
 		return response()->json($result);
 	}
