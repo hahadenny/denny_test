@@ -47,8 +47,7 @@ class BasicTest extends TestCase
 			
 		$this->json('GET', "/getCar/$carId", $data, ['Accept' => 'application/json', 'UserName' => $this->test_username, 'Token' => $this->test_token])
             ->assertStatus(200)
-            ->assertJsonStructure(
-				['*' => [
+            ->assertJsonStructure([
 					"Id",
 					"DateAdded",
 					"Type",
@@ -59,7 +58,7 @@ class BasicTest extends TestCase
 					"Miles",
 					"Vin",
 					"Deleted"
-            ]]); 
+            ]); 
 	}
 	
 	public function testGetCarList()
