@@ -21,8 +21,8 @@ class User extends Migration
 		
 		// Insert some test data
         DB::table('User')->insert([
-            'UserName' => 'denny_test',
-			'Token' => 'CjwKCAiA9aKQBhBREiwAyGP5lU0Fw85cvboak0HgbBkoU2xKS15kkiBHjHiKLlQ9FSBwnmxrnjutQRoChAIQAvD_BwE'
+            'UserName' => env('TEST_USERNAME'),
+			'Token' => env('TEST_TOKEN')
 	    ]);
     }
 
