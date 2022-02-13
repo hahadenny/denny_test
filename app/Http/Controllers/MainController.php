@@ -114,7 +114,13 @@ class MainController extends Controller
 			return response()->json($result, 500);	
 		}
 		
-		$result = Vehicle::where([['Id', $Id], ['Deleted', 0]])->first();
+		$query = Vehicle::where([['Id', $Id], ['Deleted', 0]]);
+		
+		$carType = env('CAR_TYPE');
+		if ($carType)
+			$query->where('Type', $carType);
+		
+		$result = $query->first();
 		
 		return response()->json($result);
 	}
