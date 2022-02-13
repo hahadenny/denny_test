@@ -15,6 +15,9 @@ class BasicTest extends TestCase
      *
      * @return void
      */
+	 
+	private $test_username = 'denny_test';
+	private $test_token = 'CjwKCAiA9aKQBhBREiwAyGP5lU0Fw85cvboak0HgbBkoU2xKS15kkiBHjHiKLlQ9FSBwnmxrnjutQRoChAIQAvD_BwE';
 	
 	public function testAddCar()
     {		
@@ -27,7 +30,7 @@ class BasicTest extends TestCase
 		$data['Miles'] = '8000';
 		$data['Vin'] = 'ABCD12345678';
 		
-		$this->json('POST', '/addCar', $data, ['Accept' => 'application/json'])
+		$this->json('POST', '/addCar', $data, ['Accept' => 'application/json', 'UserName' => $this->test_username, 'Token' => $this->test_token])
             ->assertStatus(200)
             ->assertJsonStructure([
                 "Id"
@@ -42,7 +45,7 @@ class BasicTest extends TestCase
 		
 		$data = array();
 			
-		$this->json('GET', "/getCar/$carId", $data, ['Accept' => 'application/json'])
+		$this->json('GET', "/getCar/$carId", $data, ['Accept' => 'application/json', 'UserName' => $this->test_username, 'Token' => $this->test_token])
             ->assertStatus(200)
             ->assertJsonStructure(
 				['*' => [
@@ -64,7 +67,7 @@ class BasicTest extends TestCase
 		global $carId;
 		$data['Id'] = $carId;
 			
-		$this->json('GET', '/getCarList', $data, ['Accept' => 'application/json'])
+		$this->json('GET', '/getCarList', $data, ['Accept' => 'application/json', 'UserName' => $this->test_username, 'Token' => $this->test_token])
             ->assertStatus(200)
             ->assertJsonStructure(
 				['*' => [
@@ -85,7 +88,7 @@ class BasicTest extends TestCase
 		global $carId;
 		$data['Vin'] = 'AAAAA5555544444';
 			
-		$this->json('PATCH', "/editCar/$carId", $data, ['Accept' => 'application/json'])
+		$this->json('PATCH', "/editCar/$carId", $data, ['Accept' => 'application/json', 'UserName' => $this->test_username, 'Token' => $this->test_token])
             ->assertStatus(200)
             ->assertJsonStructure(
 				['*' => [
@@ -109,7 +112,7 @@ class BasicTest extends TestCase
 		global $carId;
 		$data = array();
 		
-		$this->json('DELETE', "/delCar/$carId", $data, ['Accept' => 'application/json'])
+		$this->json('DELETE', "/delCar/$carId", $data, ['Accept' => 'application/json', 'UserName' => $this->test_username, 'Token' => $this->test_token])
             ->assertStatus(200)
             ->assertJson([
 				'status' => 'success'

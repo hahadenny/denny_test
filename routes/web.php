@@ -13,12 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('getCarList', 'MainController@getCarList');
+$router->group(['middleware' => ['auth']], function() use($router){
 
-Route::get('getCar/{Id}', 'MainController@getCar');
+	Route::get('getCarList', 'MainController@getCarList');
 
-Route::post('addCar', 'MainController@addCar');
+	Route::get('getCar/{Id}', 'MainController@getCar');
 
-Route::patch('editCar/{Id}', 'MainController@editCar');
+	Route::post('addCar', 'MainController@addCar');
 
-Route::delete('delCar/{Id}', 'MainController@delCar');
+	Route::patch('editCar/{Id}', 'MainController@editCar');
+
+	Route::delete('delCar/{Id}', 'MainController@delCar');
+
+});
