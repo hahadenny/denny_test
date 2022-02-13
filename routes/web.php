@@ -15,8 +15,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('getCarList', 'MainController@getCarList');
 
+Route::get('getCar/{Id}', 'MainController@getCar');
+
 Route::post('addCar', 'MainController@addCar');
 
-Route::patch('editCar', 'MainController@editCar');
+Route::patch('editCar/{Id}', 'MainController@editCar');
 
-Route::delete('delCar', 'MainController@delCar');
+Route::delete('delCar/{Id}', 'MainController@delCar');

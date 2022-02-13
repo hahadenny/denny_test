@@ -10,7 +10,6 @@ use App\Vehicle;
 class MainController extends Controller
 {
     public function getCarList(Request $request) {
-		//print_r($request->all()); exit;
 		$rules = [
 			'Id' => array('numeric'),
 			'DateAdded' => array('regex:/^\d{4}\-\d{2}\-\d{2}$/'),
@@ -19,7 +18,6 @@ class MainController extends Controller
 			'Model' => array('string'),
 			'Make' => array('string'),
 			'Vin' => array('string'),
-			//'Deleted' => array('in:0,1'),
 			'Sort' => array('in:Id,DateAdded,Type,Year,Model,Make,Vin'),
 			'Order' => array('in:asc,desc'),
 			'Sort2' => array('in:Id,DateAdded,Type,Year,Model,Make,Vin'),
@@ -35,9 +33,7 @@ class MainController extends Controller
 		
 		$validator = Validator::make($request->all(), $rules, $messages);
 		
-		if ($validator->fails()) {
-			//print_r($validator->errors()->all()); exit;
-			
+		if ($validator->fails()) {			
 			$result['status'] = '500';   
 			$result['message'] = $validator->errors()->first();
 			
@@ -67,9 +63,6 @@ class MainController extends Controller
 		if ($request->Vin)
 			$query->where('Vin', $request->Vin);
 		
-		//if ($request->Deleted)
-			//$query->where('Deleted', $request->Deleted);
-		
 		$carType = env('CAR_TYPE');
 		if ($carType)
 			$query->where('Type', $carType);
@@ -98,13 +91,35 @@ class MainController extends Controller
 		}
 		
 		$result = $query->get();
-		//print_r($result); exit;
 		
 		return response()->json($result);
     }
 	
+	public function getCar($Id) {
+		$rules = [
+			'Id' => array('required', 'numeric')
+		];
+				
+		$messages = [
+		];
+		
+		$input['Id'] = $Id;
+		
+		$validator = Validator::make($input, $rules, $messages);
+		
+		if ($validator->fails()) {			
+			$result['status'] = '500';   
+			$result['message'] = $validator->errors()->first();
+			
+			return response()->json($result, 500);	
+		}
+		
+		$result = Vehicle::where([['Id', $Id], ['Deleted', 0]])->get();
+		
+		return response()->json($result);
+	}
+	
 	public function addCar(Request $request) {
-		//print_r($request->all()); exit;
 		$rules = [
 			'Type' => array('required', 'in:used,new'),
 			'Year' => array('required', 'digits:4'),
@@ -120,9 +135,7 @@ class MainController extends Controller
 		
 		$validator = Validator::make($request->all(), $rules, $messages);
 		
-		if ($validator->fails()) {
-			//print_r($validator->errors()->all()); exit;
-			
+		if ($validator->fails()) {			
 			$result['status'] = '500';   
 			$result['message'] = $validator->errors()->first();
 			
@@ -148,8 +161,7 @@ class MainController extends Controller
 		return response()->json($result);
 	}
 	
-	public function delCar(Request $request) {
-		//print_r($request->all()); exit;
+	public function delCar($Id) {
 		$rules = [
 			'Id' => array('required', 'numeric')
 		];
@@ -157,26 +169,25 @@ class MainController extends Controller
 		$messages = [
 		];
 		
-		$validator = Validator::make($request->all(), $rules, $messages);
+		$input['Id'] = $Id;
 		
-		if ($validator->fails()) {
-			//print_r($validator->errors()->all()); exit;
-			
+		$validator = Validator::make($input, $rules, $messages);
+		
+		if ($validator->fails()) {			
 			$result['status'] = '500';   
 			$result['message'] = $validator->errors()->first();
 			
 			return response()->json($result, 500);	
 		}
 		
-		Vehicle::where('Id', $request->Id)->update(['Deleted' => 1]);
+		Vehicle::where('Id', $Id)->update(['Deleted' => 1]);
 		
 		$result['status'] = 'success';
 		
 		return response()->json($result);
 	}
 	
-	public function editCar(Request $request) {
-		//print_r($request->all()); exit;
+	public function editCar($Id, Request $request) {
 		$rules = [
 			'Id' => array('required', 'numeric'),
 			'Type' => array('in:used,new'),
@@ -191,11 +202,12 @@ class MainController extends Controller
 		$messages = [
 		];
 		
-		$validator = Validator::make($request->all(), $rules, $messages);
+		$input = $request->all();
+		$input['Id'] = $Id;
 		
-		if ($validator->fails()) {
-			//print_r($validator->errors()->all()); exit;
-			
+		$validator = Validator::make($input, $rules, $messages);
+		
+		if ($validator->fails()) {			
 			$result['status'] = '500';   
 			$result['message'] = $validator->errors()->first();
 			
@@ -225,9 +237,9 @@ class MainController extends Controller
 			return response()->json($result, 500);	
 		}
 		
-		Vehicle::where('Id', $request->Id)->update($data);
+		Vehicle::where('Id', $Id)->update($data);
 		
-		$result = Vehicle::where('Id', $request->Id)->get();
+		$result = Vehicle::where('Id', $Id)->get();
 		
 		return response()->json($result);
 	}

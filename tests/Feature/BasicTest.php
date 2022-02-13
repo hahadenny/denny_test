@@ -37,10 +37,32 @@ class BasicTest extends TestCase
 		$carId = DB::getPdo()->lastInsertId();
 	}
 	
+	public function testGetCar() {
+		global $carId;
+		
+		$data = array();
+			
+		$this->json('GET', "/getCar/$carId", $data, ['Accept' => 'application/json'])
+            ->assertStatus(200)
+            ->assertJsonStructure(
+				['*' => [
+					"Id",
+					"DateAdded",
+					"Type",
+					"Msrp",
+					"Year",
+					"Make",
+					"Model",
+					"Miles",
+					"Vin",
+					"Deleted"
+            ]]); 
+	}
+	
 	public function testGetCarList()
     {
 		global $carId;
-		$data['Id' ] = $carId;
+		$data['Id'] = $carId;
 			
 		$this->json('GET', '/getCarList', $data, ['Accept' => 'application/json'])
             ->assertStatus(200)
@@ -61,10 +83,9 @@ class BasicTest extends TestCase
 	
 	public function testEditCar() {
 		global $carId;
-		$data['Id' ] = $carId;
 		$data['Vin'] = 'AAAAA5555544444';
 			
-		$this->json('PATCH', '/editCar', $data, ['Accept' => 'application/json'])
+		$this->json('PATCH', "/editCar/$carId", $data, ['Accept' => 'application/json'])
             ->assertStatus(200)
             ->assertJsonStructure(
 				['*' => [
@@ -86,9 +107,9 @@ class BasicTest extends TestCase
 	
 	public function testDelCar() {
 		global $carId;
-		$data['Id' ] = $carId;
+		$data = array();
 		
-		$this->json('DELETE', '/delCar', $data, ['Accept' => 'application/json'])
+		$this->json('DELETE', "/delCar/$carId", $data, ['Accept' => 'application/json'])
             ->assertStatus(200)
             ->assertJson([
 				'status' => 'success'
