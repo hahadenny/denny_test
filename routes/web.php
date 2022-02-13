@@ -15,14 +15,14 @@ use Illuminate\Support\Facades\Route;
 
 $router->group(['middleware' => ['auth']], function() use($router){
 
-	Route::get('getCarList', 'MainController@getCarList');
+	$router->get('getCarList', 'MainController@getCarList');
 
-	Route::get('getCar/{Id}', 'MainController@getCar');
+	$router->get('getCar/{Id}', 'MainController@getCar');
 
-	Route::post('addCar', 'MainController@addCar');
+	$router->post('addCar', 'MainController@addCar');
 
-	Route::patch('editCar/{Id}', 'MainController@editCar');
+	$router->patch('editCar/{Id}', 'MainController@editCar');
 
-	Route::delete('delCar/{Id}', 'MainController@delCar');
+	$router->delete('delCar/{Id}', 'MainController@delCar');
 
 });
