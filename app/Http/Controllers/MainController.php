@@ -18,6 +18,12 @@ class MainController extends Controller
 			'Model' => array('string'),
 			'Make' => array('string'),
 			'Vin' => array('string'),
+			'MinYear' => array('digits:4'),
+			'MaxYear' => array('digits:4'),
+			'MinMsrp' => array('numeric'),
+			'MaxMsrp' => array('numeric'),
+			'MinMiles' => array('numeric'),
+			'MaxMiles' => array('numeric'),
 			'Sort' => array('in:Id,DateAdded,Type,Year,Model,Make,Vin'),
 			'Order' => array('in:asc,desc'),
 			'Sort2' => array('in:Id,DateAdded,Type,Year,Model,Make,Vin'),
@@ -62,6 +68,24 @@ class MainController extends Controller
 		
 		if ($request->Vin)
 			$query->where('Vin', $request->Vin);
+		
+		if ($request->MinYear)
+			$query->where('Year', '>=', $request->MinYear);	
+		
+		if ($request->MaxYear)
+			$query->where('Year', '<=', $request->MaxYear);	
+		
+		if ($request->MinMsrp)
+			$query->where('Msrp', '>=', $request->MinMsrp);	
+		
+		if ($request->MaxMsrp)
+			$query->where('Msrp', '<=', $request->MaxMsrp);	
+		
+		if ($request->MinMiles)
+			$query->where('Miles', '>=', $request->MinMiles);	
+		
+		if ($request->MaxMiles)
+			$query->where('Miles', '<=', $request->MaxMiles);	
 		
 		$carType = env('CAR_TYPE');
 		if ($carType)
