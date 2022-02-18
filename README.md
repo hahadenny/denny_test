@@ -1,3 +1,6 @@
+##  This is a sample Laravel CRUD REST API built by Denny Choi
+
+
 ### 1. To Clone Denny Test Auto API:
 
 ```bash
@@ -37,13 +40,14 @@ php artisan migrate
 
 ### 6. Swagger Documentation
 
+wget [https://github.com/hahadenny/denny_test/raw/master/denny-auto-api-swagger.zip](https://github.com/hahadenny/denny_test/raw/master/denny-auto-api-swagger.zip)
 ```bash
 unzip denny-auto-api-swagger.zip
 ```
 
 ### 7. Testing API
 
-Use the following authentication headers for testing the API: 
+Use the following authentication headers for testing the API:
 
 ```bash
 header('UserName', 'denny_test');
