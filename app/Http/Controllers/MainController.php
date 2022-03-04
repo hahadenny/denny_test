@@ -12,7 +12,8 @@ class MainController extends Controller
     public function getCarList(Request $request) {
 		$rules = [
 			'Id' => array('numeric'),
-			'DateAdded' => array('regex:/^\d{4}\-\d{2}\-\d{2}$/'),
+			//'DateAdded' => array('regex:/^\d{4}\-\d{2}\-\d{2}$/'),
+			'DateAdded' => array('date_format:Y-m-d'),
 			'Type' => array('in:used,new'),
 			'Year' => array('digits:4'),
 			'Model' => array('string'),
